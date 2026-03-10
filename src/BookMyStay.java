@@ -1,6 +1,104 @@
+/**
+ * Demonstrates initialization of different hotel room types
+ * and displays their availability.
+ *
+ * @author ATRISHMAN
+ * @version 2.1
+ */
+
+abstract class Room {
+
+    /** Number of beds available in the room. */
+    protected int numberOfBeds;
+
+    /** Total size of the room in square feet. */
+    protected int squareFeet;
+
+    /** Price charged per night for this room type. */
+    protected double pricePerNight;
+
+    /**
+     * Constructor used by child classes to initialize common room attributes.
+     */
+    public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
+        this.numberOfBeds = numberOfBeds;
+        this.squareFeet = squareFeet;
+        this.pricePerNight = pricePerNight;
+    }
+
+    public int getNumberOfBeds() {
+        return numberOfBeds;
+    }
+
+    public int getSquareFeet() {
+        return squareFeet;
+    }
+
+    public double getPricePerNight() {
+        return pricePerNight;
+    }
+}
+
+/** Single room type */
+class SingleRoom extends Room {
+
+    /** Initializes a SingleRoom with predefined attributes. */
+    public SingleRoom() {
+        super(1, 250, 1500.0);
+    }
+}
+
+/** Double room type */
+class DoubleRoom extends Room {
+
+    /** Initializes a DoubleRoom with predefined attributes. */
+    public DoubleRoom() {
+        super(2, 400, 2500.0);
+    }
+}
+
+/** Suite room type */
+class SuiteRoom extends Room {
+
+    /** Initializes a SuiteRoom with predefined attributes. */
+    public SuiteRoom() {
+        super(3, 750, 5000.0);
+    }
+}
+
 public class BookMyStay {
+
+    /**
+     * Application entry point.
+     */
     public static void main(String[] args) {
-        System.out.println("Welcome to the Hotel Booking Management System");
-        System.out.println("System initialized successfully.");
+
+        Room singleRoom = new SingleRoom();
+        Room doubleRoom = new DoubleRoom();
+        Room suiteRoom = new SuiteRoom();
+
+        int singleAvailable = 5;
+        int doubleAvailable = 3;
+        int suiteAvailable = 2;
+
+        System.out.println("Hotel Room Initialization\n");
+
+        System.out.println("Single Room:");
+        System.out.println("Beds: " + singleRoom.getNumberOfBeds());
+        System.out.println("Size: " + singleRoom.getSquareFeet() + " sqft");
+        System.out.println("Price per night: " + singleRoom.getPricePerNight());
+        System.out.println("Available: " + singleAvailable + "\n");
+
+        System.out.println("Double Room:");
+        System.out.println("Beds: " + doubleRoom.getNumberOfBeds());
+        System.out.println("Size: " + doubleRoom.getSquareFeet() + " sqft");
+        System.out.println("Price per night: " + doubleRoom.getPricePerNight());
+        System.out.println("Available: " + doubleAvailable + "\n");
+
+        System.out.println("Suite Room:");
+        System.out.println("Beds: " + suiteRoom.getNumberOfBeds());
+        System.out.println("Size: " + suiteRoom.getSquareFeet() + " sqft");
+        System.out.println("Price per night: " + suiteRoom.getPricePerNight());
+        System.out.println("Available: " + suiteAvailable);
     }
 }
