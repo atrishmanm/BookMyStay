@@ -1,25 +1,7 @@
-/**
- * Demonstrates initialization of different hotel room types
- * and displays their availability.
- *
- * @author ATRISHMAN
- * @version 2.1
- */
-
 abstract class Room {
-
-    /** Number of beds available in the room. */
     protected int numberOfBeds;
-
-    /** Total size of the room in square feet. */
     protected int squareFeet;
-
-    /** Price charged per night for this room type. */
     protected double pricePerNight;
-
-    /**
-     * Constructor used by child classes to initialize common room attributes.
-     */
     public Room(int numberOfBeds, int squareFeet, double pricePerNight) {
         this.numberOfBeds = numberOfBeds;
         this.squareFeet = squareFeet;
@@ -39,40 +21,26 @@ abstract class Room {
     }
 }
 
-/** Single room type */
 class SingleRoom extends Room {
-
-    /** Initializes a SingleRoom with predefined attributes. */
     public SingleRoom() {
         super(1, 250, 1500.0);
     }
 }
 
-/** Double room type */
 class DoubleRoom extends Room {
-
-    /** Initializes a DoubleRoom with predefined attributes. */
     public DoubleRoom() {
         super(2, 400, 2500.0);
     }
 }
 
-/** Suite room type */
 class SuiteRoom extends Room {
-
-    /** Initializes a SuiteRoom with predefined attributes. */
     public SuiteRoom() {
         super(3, 750, 5000.0);
     }
 }
 
 public class BookMyStay {
-
-    /**
-     * Application entry point.
-     */
     public static void main(String[] args) {
-
         Room singleRoom = new SingleRoom();
         Room doubleRoom = new DoubleRoom();
         Room suiteRoom = new SuiteRoom();
