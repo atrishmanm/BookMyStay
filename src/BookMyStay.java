@@ -1,63 +1,88 @@
 import java.util.*;
 
-class Reservation {
-    private String guestName;
-    private String roomType;
-
-    public Reservation(String guestName, String roomType) {
-        this.guestName = guestName;
-        this.roomType = roomType;
-    }
-
-    public String getGuestName() {
-        return guestName;
-    }
-
-    public String getRoomType() {
-        return roomType;
+class InvalidBookingException extends Exception {
+    public InvalidBookingException(String message) {
+        super(message);
     }
 }
 
-class BookingHistory {
-    private List<Reservation> confirmedReservations;
+class RoomInventory {
+    private Map<String, Integer> inventory;
 
-    public BookingHistory() {
-        confirmedReservations = new ArrayList<>();
+    public RoomInventory() {
+        inventory = new HashMap<>();
+        inventory.put("Single", 2);
+        inventory.put("Double", 2);
+        inventory.put("Suite", 1);
     }
 
-    public void addReservation(Reservation reservation) {
-        confirmedReservations.add(reservation);
+    public boolean isValidRoomType(String roomType) {
+        return inventory.containsKey(roomType);
     }
 
-    public List<Reservation> getConfirmedReservations() {
-        return confirmedReservations;
+    public boolean isAvailable(String roomType) {
+        return inventory.getOrDefault(roomType, 0) > 0;
     }
 }
 
-class BookingReportService {
-    public void generateReport(BookingHistory history) {
-        System.out.println("\nBooking History Report");
-        for (Reservation r : history.getConfirmedReservations()) {
-            System.out.println("Guest: " + r.getGuestName() + ", Room Type: " + r.getRoomType());
+class BookingRequestQueue {
+    private Queue<String> queue;
+
+    public BookingRequestQueue() {
+        queue = new LinkedList<>();
+    }
+
+    public void addRequest(String request) {
+        queue.offer(request);
+    }
+}
+
+class ReservationValidator {
+    public void validate(String guestName, String roomType, RoomInventory inventory)
+            throws InvalidBookingException {
+
+        if (guestName == null || guestName.trim().isEmpty()) {
+            throw new InvalidBookingException("Guest name cannot be empty.");
+        }
+
+        if (!inventory.isValidRoomType(roomType)) {
+            throw new InvalidBookingException("Invalid room type selected.");
+        }
+
+        if (!inventory.isAvailable(roomType)) {
+            throw new InvalidBookingException("Selected room type is not available.");
         }
     }
 }
 
 public class BookMyStay {
     public static void main(String[] args) {
-        System.out.println("Booking History and Reporting");
 
-        BookingHistory history = new BookingHistory();
-        BookingReportService reportService = new BookingReportService();
+        System.out.println("Booking Validation");
 
-        Reservation r1 = new Reservation("Abhi", "Single");
-        Reservation r2 = new Reservation("Subha", "Double");
-        Reservation r3 = new Reservation("Vanmathi", "Suite");
+        Scanner scanner = new Scanner(System.in);
 
-        history.addReservation(r1);
-        history.addReservation(r2);
-        history.addReservation(r3);
+        RoomInventory inventory = new RoomInventory();
+        ReservationValidator validator = new ReservationValidator();
+        BookingRequestQueue bookingQueue = new BookingRequestQueue();
 
-        reportService.generateReport(history);
+        try {
+            System.out.print("Enter guest name: ");
+            String guestName = scanner.nextLine();
+
+            System.out.print("Enter room type (Single/Double/Suite): ");
+            String roomType = scanner.nextLine();
+
+            validator.validate(guestName, roomType, inventory);
+
+            bookingQueue.addRequest(guestName + " - " + roomType);
+
+            System.out.println("Booking request accepted.");
+
+        } catch (InvalidBookingException e) {
+            System.out.println("Booking failed: " + e.getMessage());
+        } finally {
+            scanner.close();
+        }
     }
 }
